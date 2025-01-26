@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Robux Spin Wheel</title>
+  <style>
+    /* General styling */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: white;
+    }
+
+    .container {
+      text-align: center;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      color: white;
+      background: #ff5733;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #c13b16;
+    }
+
+    #error-message {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: red;
+      display: none;
+    }
+
+    canvas {
+      margin-top: 20px;
+      border-radius: 50%;
+      background: white;
+    }
+
+    .spin-container {
+      margin-top: 20px;
+    }
+
+    #spin-button:disabled {
+      background: gray;
+      cursor: not-allowed;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Access Code Screen -->
+    <div id="access-screen">
+      <h1>Enter Access Code</h1>
+      <input type="text" id="access-code" placeholder="Enter code">
+      <button id="submit-code">Submit</button>
+      <p id="error-message">Incorrect code! Please try again.</p>
+    </div>
+
+    <!-- Wheel Screen -->
+    <div id="wheel-container" style="display: none;">
+      <h1>Robux Spin Wheel</h1>
+      <canvas id="wheel" width="300" height="300"></canvas>
+      <div class="spin-container">
+        <button id="spin-button">Spin</button>
+      </div>
+      <p id="result"></p>
+    </div>
+  </div>
+
+  <script>
+    // Get access code from localStorage or URL parameter
+    const savedCode = localStorage.getItem("accessCode") || new URLSearchParams(window.location.search).get("code") || "7834";
+
+    // Constants
+    const segments = ["0 Robux", "0 Robux", "0 Robux", "0 Robux", "0 Robux", "0 Robux", "0 Robux", "50 Robux", "50 Robux", "50 Robux"];
+    const colors = ["#ff0000", "#00ff00", "#0000ff", "#ffff00", "#ff00ff", "#00ffff", "#ffa500", "#add8e6", "#90ee90", "#ff69b4"];
+
+    let hasSpun = false; // To restrict spinning to one attempt
+    let isSpinning = false; // To prevent multiple spins at the same time
+
+    // Elements
+    const accessScreen = document.getElementById("access-screen");
+    const wheelContainer = document.getElementById("wheel-container");
+    const errorMessage = document.getElementById("error-message");
+    const canvas = document.getElementById("wheel");
+    const ctx = canvas.getContext("2d");
+    const spinButton = document.getElementById("spin-button");
+    const resultDisplay = document.getElementById("result");
+
+    // Access Code Validation
+    document.getElementById("submit-code").addEventListener("click", () => {
+      const inputCode = document.getElementById("access-code").value.trim();
+      if (inputCode === savedCode) {
+        accessScreen.style.display = "none";
+        wheelContainer.style.display = "block";
+      } else {
+        errorMessage.style.display = "block";
+        setTimeout(() => {
+          errorMessage.style.display = "none";
+        }, 2000);
+      }
+    });
+
+    // Draw the Wheel
+    function drawWheel() {
+      const segmentAngle = (2 * Math.PI) / segments.length;
+
+      for (let i = 0; i < segments.length; i++) {
+        const startAngle = i * segmentAngle;
+        const endAngle = startAngle + segmentAngle;
+
+        // Draw segment
+        ctx.beginPath();
+        ctx.moveTo(canvas.width / 2, canvas.height / 2);
+        ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, startAngle, endAngle);
+        ctx.closePath();
+
+        ctx.fillStyle = colors[i];
+        ctx.fill();
+
+        // Add text
+        ctx.save();
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.rotate(startAngle + segmentAngle / 2);
+        ctx.textAlign = "right";
+        ctx.fillStyle = "#000";
+        ctx.font = "12px Arial";
+        ctx.fillText(segments[i], canvas.width / 2 - 10, 0);
+        ctx.restore();
+      }
+    }
+
+    // Spin the Wheel
+    spinButton.addEventListener("click", () => {
+      if (hasSpun || isSpinning) return;
+
+      isSpinning = true;
+      resultDisplay.textContent = "Spinning...";
+      const spinDuration = Math.random() * 3000 + 2000; // Spin duration between 2-5 seconds
+      const spinSpeed = Math.random() * 0.2 + 0.3; // Spin speed
+      const segmentAngle = (2 * Math.PI) / segments.length;
+
+      let currentAngle = 0;
+      let spinTime = 0;
+
+      function spin() {
+        currentAngle += spinSpeed;
+        currentAngle %= 2 * Math.PI;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.save();
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.rotate(currentAngle);
+        ctx.translate(-canvas.width / 2, -canvas.height / 2);
+        drawWheel();
+        ctx.restore();
+
+        spinTime += 16;
+        if (spinTime < spinDuration) {
+          requestAnimationFrame(spin);
+        } else {
+          isSpinning = false;
+          hasSpun = true;
+          spinButton.disabled = true; // Disable the spin button
+          const chosenIndex = Math.floor(((2 * Math.PI - currentAngle) % (2 * Math.PI)) / segmentAngle);
+          resultDisplay.textContent = `Result: ${segments[chosenIndex]}`;
+        }
+      }
+
+      spin();
+    });
+
+    // Initial draw
+    drawWheel();
+  </script>
+</body>
+</html>
