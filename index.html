@@ -1,214 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Robux Spin Wheel</title>
-  <style>
-    /* General styling */
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
-      color: white;
-    }
-
-    .container {
-      text-align: center;
-      background: rgba(0, 0, 0, 0.8);
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3);
-    }
-
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-    }
-
-    input[type="text"] {
-      padding: 10px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 5px;
-      margin-bottom: 10px;
-    }
-
-    button {
-      padding: 10px 20px;
-      font-size: 1rem;
-      color: white;
-      background: #ff5733;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    button:hover {
-      background: #c13b16;
-    }
-
-    #error-message {
-      margin-top: 10px;
-      font-size: 0.9rem;
-      color: red;
-      display: none;
-    }
-
-    canvas {
-      margin-top: 20px;
-      border-radius: 50%;
-      background: white;
-    }
-
-    .spin-container {
-      margin-top: 20px;
-    }
-
-    #spin-button:disabled {
-      background: gray;
-      cursor: not-allowed;
-    }
-
-    #result {
-      margin-top: 20px;
-      font-size: 1.2rem;
-      font-weight: bold;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIP Memberships</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #111;
+            color: white;
+            padding: 50px;
+        }
+        /* Positioning the DM info in the top-left corner */
+        .dm-info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 16px;
+            color: white;
+            background-color: #333;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .container {
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            margin: 20px;
+            width: 300px;
+        }
+        h1 {
+            color: #00ffff;
+        }
+        .button {
+            background-color: #00ffff;
+            color: black;
+            padding: 15px;
+            text-decoration: none;
+            font-size: 20px;
+            border-radius: 5px;
+            display: block;
+            margin: 10px auto;
+            width: 80%;
+        }
+        .button:hover {
+            background-color: #00cccc;
+        }
+        .price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #00ff00;
+        }
+        .input-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        input {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #00ffff;
+            background: #333;
+            color: white;
+            text-align: center;
+            width: 150px;
+        }
+        button {
+            background-color: #00ffff;
+            color: black;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #00cccc;
+        }
+        #discountMessage {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        .faq-container {
+            background-color: #222;
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .faq-title {
+            font-size: 22px;
+            color: #00ffff;
+        }
+        .faq-item {
+            margin-top: 10px;
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .faq-answer {
+            display: none;
+            padding: 10px;
+            background-color: #444;
+            margin-top: 5px;
+            border-radius: 5px;
+        }
+        .faq-item:hover {
+            background-color: #00cccc;
+        }
+        /* Payment Status Style */
+        #paymentStatus {
+            font-size: 18px;
+            margin-top: 20px;
+            color: #00ff00;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Access Code Screen -->
-    <div id="access-screen">
-      <h1>Enter Access Code</h1>
-      <input type="text" id="access-code" placeholder="Enter code">
-      <button id="submit-code">Submit</button>
-      <p id="error-message">Incorrect code! Please try again.</p>
+    <!-- DM Info Section -->
+    <div class="dm-info">
+        DM combatsamurai_72502 / Watermelon For Cash App Purchases
     </div>
 
-    <!-- Wheel Screen -->
-    <div id="wheel-container" style="display: none;">
-      <h1>Robux Spin Wheel</h1>
-      <canvas id="wheel" width="300" height="300"></canvas>
-      <div class="spin-container">
-        <button id="spin-button">Spin</button>
-      </div>
-      <p id="result"></p>
+    <h1>💎 VIP Memberships 💎</h1>
+
+    <div class="container">
+        <h2>💎 Premium VIP 💎</h2>
+        <p>Exclusive features for <span class="price" id="premiumPrice">$15</span>/month.</p>
+        <a id="premiumLink" class="button" href="https://www.paypal.me/ZanoGarblie/15" target="_blank" onclick="startPaymentProcess('premium')">Buy Premium VIP</a>
     </div>
-  </div>
 
-  <script>
-    // Get access code from localStorage or URL parameter
-    const savedCode = localStorage.getItem("accessCode") || new URLSearchParams(window.location.search).get("code") || "7834";
+    <div class="container">
+        <h2>⭐ Normal VIP ⭐</h2>
+        <p>Basic perks for <span class="price" id="normalPrice">$5</span>/month.</p>
+        <a id="normalLink" class="button" href="https://www.paypal.me/ZanoGarblie/5" target="_blank" onclick="startPaymentProcess('normal')">Buy Normal VIP</a>
+    </div>
 
-    // Constants
-    const segments = ["0 Robux", "0 Robux", "0 Robux", "0 Robux", "0 Robux", "0 Robux", "0 Robux", "50 Robux", "50 Robux", "50 Robux"];
-    const colors = ["#ff0000", "#00ff00", "#0000ff", "#ffff00", "#ff00ff", "#00ffff", "#ffa500", "#add8e6", "#90ee90", "#ff69b4"];
+    <div class="container">
+        <h2>🔑 Are You a Mod? 🔑</h2>
+        <p>Redeem a special code for **5% off** (one-time use only).</p>
+        <div class="input-container">
+            <input type="text" id="codeInput" placeholder="Enter your code">
+            <button onclick="redeemCode()">Redeem</button>
+        </div>
+        <p id="discountMessage"></p>
+    </div>
 
-    let hasSpun = false; // To restrict spinning to one attempt
-    let isSpinning = false; // To prevent multiple spins at the same time
+    <!-- Payment Status Section -->
+    <div id="paymentStatus"></div>
 
-    // Elements
-    const accessScreen = document.getElementById("access-screen");
-    const wheelContainer = document.getElementById("wheel-container");
-    const errorMessage = document.getElementById("error-message");
-    const canvas = document.getElementById("wheel");
-    const ctx = canvas.getContext("2d");
-    const spinButton = document.getElementById("spin-button");
-    const resultDisplay = document.getElementById("result");
+    <!-- FAQ Section -->
+    <div class="faq-container">
+        <h2 class="faq-title">❓ FAQ</h2>
+        
+        <div class="faq-item" onclick="toggleAnswer('premiumVIP')">
+            <strong>💎 Premium VIP Features</strong>
+        </div>
+        <div id="premiumVIP" class="faq-answer">
+            <ul>
+                <li>Access to a secret chat ✅</li>
+                <li>Free Private server ✅</li>
+                <li>Extra Giveaway entries ✅</li>
+                <li>Access to more Auroras ✅</li>
+                <li>Will get the “premium VIP” role ✅</li>
+                <li>Be in challenges for stuff ✅</li>
+                <li>Discounts for stuff you buy (only in our server) ✅</li>
+                <li>Will 100% get help with anything in Fisch ✅</li>
+                <li>All Night Aurora ✅</li>
+                <li>Free stuff ✅</li>
+            </ul>
+        </div>
 
-    // Access Code Validation
-    document.getElementById("submit-code").addEventListener("click", () => {
-      const inputCode = document.getElementById("access-code").value.trim();
-      if (inputCode === savedCode) {
-        accessScreen.style.display = "none";
-        wheelContainer.style.display = "block";
-      } else {
-        errorMessage.style.display = "block";
-        setTimeout(() => {
-          errorMessage.style.display = "none";
-        }, 2000);
-      }
-    });
+        <div class="faq-item" onclick="toggleAnswer('normalVIP')">
+            <strong>🤑 Normal VIP Features</strong>
+        </div>
+        <div id="normalVIP" class="faq-answer">
+            <ul>
+                <li>Access to a secret chat ✅</li>
+                <li>Free Private server ✅</li>
+                <li>Extra Giveaway entries ✅</li>
+                <li>Access to more Auroras ❌</li>
+                <li>Will get the “Normal VIP” role ✅</li>
+                <li>Be in challenges for stuff ❌</li>
+                <li>Discounts for stuff you buy (only in our server) ❌</li>
+                <li>Will 100% get help with anything in Fisch ❌</li>
+                <li>All Night Aurora ❌</li>
+                <li>Free stuff ✅</li>
+            </ul>
+        </div>
+    </div>
 
-    // Draw the Wheel
-    function drawWheel() {
-      const segmentAngle = (2 * Math.PI) / segments.length;
+    <script>
+        const validCode = "1000051271";
+        const discountFactor = 0.95; // 5% off
 
-      for (let i = 0; i < segments.length; i++) {
-        const startAngle = i * segmentAngle;
-        const endAngle = startAngle + segmentAngle;
+        function redeemCode() {
+            let codeInput = document.getElementById("codeInput").value;
+            let discountMessage = document.getElementById("discountMessage");
 
-        // Draw segment
-        ctx.beginPath();
-        ctx.moveTo(canvas.width / 2, canvas.height / 2);
-        ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, startAngle, endAngle);
-        ctx.closePath();
+            if (localStorage.getItem("redeemedCode") === validCode) {
+                discountMessage.style.color = "red";
+                discountMessage.innerHTML = "❌ Code already used! You can't redeem it again.";
+                return;
+            }
 
-        ctx.fillStyle = colors[i];
-        ctx.fill();
+            if (codeInput === validCode) {
+                localStorage.setItem("redeemedCode", validCode); // Save to local storage
 
-        // Add text
-        ctx.save();
-        ctx.translate(canvas.width / 2, canvas.height / 2);
-        ctx.rotate(startAngle + segmentAngle / 2);
-        ctx.textAlign = "right";
-        ctx.fillStyle = "#000";
-        ctx.font = "12px Arial";
-        ctx.fillText(segments[i], canvas.width / 2 - 10, 0);
-        ctx.restore();
-      }
-    }
+                discountMessage.style.color = "green";
+                discountMessage.innerHTML = "✅ Code accepted! 5% discount applied.";
 
-    // Spin the Wheel
-    spinButton.addEventListener("click", () => {
-      if (hasSpun || isSpinning) return;
+                let newPremiumPrice = (15 * discountFactor).toFixed(2);
+                let newNormalPrice = (5 * discountFactor).toFixed(2);
 
-      isSpinning = true;
-      resultDisplay.textContent = "Spinning...";
-      const spinDuration = Math.random() * 3000 + 2000; // Spin duration between 2-5 seconds
-      const spinSpeed = Math.random() * 0.2 + 0.3; // Spin speed
-      const segmentAngle = (2 * Math.PI) / segments.length;
+                document.getElementById("premiumPrice").innerText = `$${newPremiumPrice}`;
+                document.getElementById("normalPrice").innerText = `$${newNormalPrice}`;
 
-      let currentAngle = 0;
-      let spinTime = 0;
-
-      function spin() {
-        currentAngle += spinSpeed;
-        currentAngle %= 2 * Math.PI;
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.save();
-        ctx.translate(canvas.width / 2, canvas.height / 2);
-        ctx.rotate(currentAngle);
-        ctx.translate(-canvas.width / 2, -canvas.height / 2);
-        drawWheel();
-        ctx.restore();
-
-        spinTime += 16;
-        if (spinTime < spinDuration) {
-          requestAnimationFrame(spin);
-        } else {
-          isSpinning = false;
-          hasSpun = true;
-          spinButton.disabled = true; // Disable the spin button
-          const chosenIndex = Math.floor(((2 * Math.PI - currentAngle) % (2 * Math.PI)) / segmentAngle);
-          resultDisplay.textContent = `Result: ${segments[chosenIndex]}`;
+                document.getElementById("premiumLink").href = `https://www.paypal.me/ZanoGarblie/${newPremiumPrice}`;
+                document.getElementById("normalLink").href = `https://www.paypal.me/ZanoGarblie/${newNormalPrice}`;
+            } else {
+                discountMessage.style.color = "red";
+                discountMessage.innerHTML = "❌ Invalid code. Try again.";
+            }
         }
-      }
-
-      spin();
-    });
-
-    // Initial draw
-    drawWheel();
-  </script>
-</body>
-</html>
