@@ -229,3 +229,33 @@
                 discountMessage.innerHTML = "❌ Invalid code. Try again.";
             }
         }
+
+        // Toggle the FAQ answers
+        function toggleAnswer(id) {
+            let answer = document.getElementById(id);
+            if (answer.style.display === "block") {
+                answer.style.display = "none";
+            } else {
+                answer.style.display = "block";
+            }
+        }
+
+        // Simulate the payment process
+        function startPaymentProcess(membershipType) {
+            document.getElementById("paymentStatus").innerHTML = "🔄 Payment is being registered...";
+
+            setTimeout(function() {
+                document.getElementById("paymentStatus").innerHTML = "✅ Payment successfully completed!";
+            }, 3000); // Simulate a 3-second payment process
+        }
+
+        // Check if the code was already redeemed on page load
+        window.onload = function() {
+            if (localStorage.getItem("redeemedCode") === validCode) {
+                document.getElementById("discountMessage").style.color = "red";
+                document.getElementById("discountMessage").innerHTML = "❌ Code already used! You can't redeem it again.";
+            }
+        };
+    </script>
+</body>
+</html>
